@@ -9,15 +9,28 @@ module.exports = function (grunt) {
 
         // Clean dist folder (all except lib folder)
         clean: {
-            js: ["dist/css","dist/js/*", "!dist/js/libs/**",  "dist/index.html"]
+            js: ["dist/css","dist/js/*", "!dist/js/libs/**",  "dist/index.html"],
+            dist: ["dist/js/*", "!dist/js/index.js", "!dist/js/libs/**"]
         },
 
         // Compilation from ES6 to ES5 with Babel
         babel: {
-            options: {
-                sourceMap: true
+            dev: {
+                options: {
+                    sourceMap: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'js',
+                    src: '**/*.js',
+                    dest: 'dist/js/',
+                    ext: '.js'
+                }]
             },
             dist: {
+                options: {
+                    sourceMap: false
+                },
                 files: [{
                     expand: true,
                     cwd: 'js',
@@ -31,7 +44,7 @@ module.exports = function (grunt) {
         watch : {
             js : {
                 files: ['js/**/*.js'],
-                tasks: ['newer:babel']
+                tasks: ['newer:babel:dev']
             },
             sass : {
                 files: ['sass/**/*.scss'],
@@ -122,6 +135,11 @@ module.exports = function (grunt) {
             local: {
                 path: 'http://localhost:3000/dist'
             }
+        },
+
+        // Create crosswalk application
+        exec: {
+            cmd:'python build/crosswalk_tools/make_apk.py --package=com.pixelcodr.letigo --manifest=dist/manifest.json --arch=arm --target-dir=build'
         }
     });
 
@@ -139,17 +157,22 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('dev', 'build dev version', [
-        'clean',
-        'babel',
+        'clean:js',
+        'babel:dev',
         'sass',
         'postcss:debug',
         'bake'
     ]);
 
     grunt.registerTask('dist', 'build dist version', [
-        'dev',
-        'htmlmin',
-        'uglify'
+        'clean:js',
+        'babel:dist',
+        'sass',
+        'postcss:dist',
+        'bake',
+        'htmlmin',      // minify html
+        'uglify',       // compile js files in index.js
+        'clean:dist'    // remove js file
     ]);
 };
 
