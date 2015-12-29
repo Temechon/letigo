@@ -16,6 +16,8 @@ html, body {
   top: 0;
   left: 0;
   pointer-events: none;
+  background: #f4e29c;
+  background: linear-gradient(135deg, rgba(244, 226, 156, 0) 0%, #3b293a 100%), linear-gradient(to right, #f4e29c 0%, #826057 100%);
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -26,24 +28,29 @@ html, body {
       -ms-flex-align: center;
           align-items: center; }
   .game-gui .title {
-    background-color: rgba(255, 0, 0, 0.1);
     width: 100%;
     text-align: center;
-    -webkit-flex-grow: 2;
-        -ms-flex-positive: 2;
-            flex-grow: 2; }
+    height: 30%;
+    margin: 2% 0 2% 0; }
     .game-gui .title img {
+      max-height: 100%;
+      max-width: 100%;
       position: relative;
-      top: 50%; }
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+              transform: translateY(-50%); }
   .game-gui .subtitle {
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    height: 20%;
+    text-align: center;
+    font-size: 2em; }
+  .game-gui .button, .game-gui .instructions, .game-gui .play {
+    width: 250px;
+    margin: auto;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 1.2em; }
   .game-gui .instructions {
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    background-color: #0b97c4; }
   .game-gui .play {
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
+    background-color: #40a070; }
