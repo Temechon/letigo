@@ -15,4 +15,35 @@ html, body {
   height: 100%;
   top: 0;
   left: 0;
-  pointer-events: none; }
+  pointer-events: none;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .game-gui .title {
+    background-color: rgba(255, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+    -webkit-flex-grow: 2;
+        -ms-flex-positive: 2;
+            flex-grow: 2; }
+    .game-gui .title img {
+      position: relative;
+      top: 50%; }
+  .game-gui .subtitle {
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
+  .game-gui .instructions {
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
+  .game-gui .play {
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
