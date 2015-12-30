@@ -71,12 +71,11 @@ module.exports = function (grunt) {
         uglify : {
             dist: {
                 options: {
-                    options: {
-                        beautify: false
-                    }
+                    compress:true,
+                    beautify: false
                 },
                 files: {
-                    'dist/js/index.js': ['dist/js/**/*.js', '!dist/js/libs/**/*.js']
+                    'dist/js/index.js': ['dist/js/GameObject.js', 'dist/js/**/*.js', '!dist/js/libs/**/*.js']
                 }
             }
         },
@@ -128,6 +127,13 @@ module.exports = function (grunt) {
                     port: 3000,
                     base: '.'
                 }
+            },
+            test: {
+                options: {
+                    port: 3000,
+                    base: '.',
+                    keepalive:true
+                }
             }
         },
         // Open default browser
@@ -139,19 +145,20 @@ module.exports = function (grunt) {
 
         // Create crosswalk application
         exec: {
-            cmd:'python build/crosswalk_tools/make_apk.py --package=com.pixelcodr.letigo --manifest=dist/manifest.json --arch=arm --target-dir=build'
+            cmd:'python build/crosswalk_tools/make_apk.py --package=com.pixelcodr.letigo --manifest=dist/manifest.json --arch=arm --target-dir=build',
+            deploy:'adb install -r build/Letigo_arm.apk'
         }
     });
 
     grunt.registerTask('default', 'Compile and watch source files', [
         'dev',
-        'connect',
+        'connect:server',
         'open',
         'watch'
     ]);
 
     grunt.registerTask('run', 'Run the webserver and watch files', [
-        'connect',
+        'connect:server',
         'open',
         'watch'
     ]);
@@ -164,6 +171,11 @@ module.exports = function (grunt) {
         'bake'
     ]);
 
+    grunt.registerTask('test', 'test dist version', [
+        'open',
+        'connect:test'
+    ]);
+
     grunt.registerTask('dist', 'build dist version', [
         'clean:js',
         'babel:dist',
@@ -174,6 +186,11 @@ module.exports = function (grunt) {
         'uglify',       // compile js files in index.js
         'clean:dist'    // remove js file
     ]);
+    grunt.registerTask('build', 'build crosswalk prototype', [
+        'dist',
+        'exec'
+    ]);
+
 };
 
 

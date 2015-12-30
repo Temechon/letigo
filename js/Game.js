@@ -8,13 +8,19 @@ class Game {
     constructor(canvasId) {
 
         let canvas          = document.getElementById(canvasId);
-        this.engine         = new BABYLON.Engine(canvas, true);
+        this.engine         = new BABYLON.Engine(canvas, false, null, false);
 
         // Contains all loaded assets needed for this state
         this.assets  = [];
 
         // The state scene
         this.scene   = null;
+
+        // Positions on cells that can be built on
+        this.availablePositions = [];
+
+        // Positions with a building on it
+        this.takenPositions = [];
 
         // Resize window event
         window.addEventListener("resize", () => {
@@ -28,8 +34,8 @@ class Game {
 
         let scene = new BABYLON.Scene(this.engine);
         // Camera attached to the canvas
-        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0,5,-10), scene);
-        camera.setTarget(BABYLON.Vector3.Zero());
+        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(9.4, 15, -14), scene);
+        camera.rotation.x = 0.5;
         camera.attachControl(this.engine.getRenderingCanvas());
 
         // Hemispheric light to light the scene
@@ -66,6 +72,59 @@ class Game {
 
     _initGame() {
 
-        let box = BABYLON.Mesh.CreateBox('', 1, this.scene);
+        window.addEventListener("keydown", (evt) => {
+            if (evt.keyCode == 32) {
+                if (this.scene.debugLayer._enabled) {
+                    this.scene.debugLayer.hide();
+                } else {
+                    this.scene.debugLayer.show();
+                }
+            }
+        });
+
+
+        for (let x=0; x<5; x++) {
+            for (let z=0; z<5; z++) {
+                let cell = new Cell(this);
+                cell.updatePosition(new BABYLON.Vector3(x*5, 0, z*5));
+                this.availablePositions.push(...cell.positions);
+            }
+        }
+        setInterval(() => {
+            this.build(this.getRandomPosition());
+        }, 200);
+
+        //for (let p of cell.positions) {
+        //    let b = new Building(this, p);
+        //    b.spawn();
+        //}
     }
+
+    /**
+     * Returns an integer in [min, max[
+     */
+    _randomNumber(min, max) {
+        if (min === max) {
+            return (min);
+        }
+        let random = Math.random();
+        return Math.floor(((random * (max - min)) + min));
+    }
+
+    getRandomPosition() {
+        let ind = this._randomNumber(0,this.availablePositions.length);
+        console.log(ind);
+        let res = this.availablePositions.splice(ind, 1)[0];
+        this.takenPositions.push(res);
+        return res;
+    }
+
+    build(position) {
+        if (position) {
+            let b = new Building(this, position);
+            b.spawn();
+        }
+    }
+
+
 }
