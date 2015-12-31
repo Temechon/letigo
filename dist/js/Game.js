@@ -132,10 +132,19 @@ var Game = (function () {
     }, {
         key: "build",
         value: function build(position) {
-            if (position) {
-                var b = new Building(this, position);
-                b.spawn();
-            }
+            new Building(this, position);
+        }
+    }, {
+        key: "cleanPosition",
+        value: function cleanPosition(building) {
+            var _this4 = this;
+
+            this.takenPositions.forEach(function (pos, index) {
+                if (pos.equals(building.position)) {
+                    _this4.takenPositions.splice(index, 1);
+                    _this4.availablePositions.push(pos);
+                }
+            });
         }
     }], [{
         key: "randomNumber",
@@ -150,3 +159,4 @@ var Game = (function () {
 
     return Game;
 })();
+//# sourceMappingURL=Game.js.map

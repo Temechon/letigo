@@ -119,10 +119,16 @@ class Game {
     }
 
     build(position) {
-        if (position) {
-            let b = new Building(this, position);
-            b.spawn();
-        }
+        new Building(this, position);
+    }
+
+    cleanPosition(building) {
+        this.takenPositions.forEach((pos, index) => {
+           if (pos.equals(building.position)) {
+               this.takenPositions.splice(index, 1);
+               this.availablePositions.push(pos);
+           }
+        });
     }
 
 }
