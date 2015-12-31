@@ -124,7 +124,7 @@ var Game = (function () {
          * @returns {T}
          */
         value: function getRandomPosition() {
-            var ind = Game._randomNumber(0, this.availablePositions.length);
+            var ind = Game.randomNumber(0, this.availablePositions.length);
             var res = this.availablePositions.splice(ind, 1)[0];
             this.takenPositions.push(res);
             return res;
@@ -138,8 +138,8 @@ var Game = (function () {
             }
         }
     }], [{
-        key: "_randomNumber",
-        value: function _randomNumber(min, max) {
+        key: "randomNumber",
+        value: function randomNumber(min, max) {
             if (min === max) {
                 return min;
             }

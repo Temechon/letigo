@@ -98,7 +98,7 @@ class Game {
     /**
      * Returns an integer in [min, max[
      */
-    static _randomNumber(min, max) {
+    static randomNumber(min, max) {
         if (min === max) {
             return (min);
         }
@@ -112,7 +112,7 @@ class Game {
      * @returns {T}
      */
     getRandomPosition() {
-        let ind = Game._randomNumber(0,this.availablePositions.length);
+        let ind = Game.randomNumber(0,this.availablePositions.length);
         let res = this.availablePositions.splice(ind, 1)[0];
         this.takenPositions.push(res);
         return res;

@@ -10,9 +10,22 @@ class Building extends GameObject{
 
         // The old price of this building (to know if the price is rising of decreasing)
         this._oldPrice = 0;
+        this._oldArrow = null;
 
         // The price of this building
         this.price = 0;
+        this.basePrice = 1000;
+        let dr = this.basePrice/4;
+
+        this.parameters = [
+            Game.randomNumber(-7,7), //inflation
+            Game.randomNumber(this.basePrice-dr, this.basePrice+dr), // range
+            Math.random(), // frequency 1
+            Math.random(), // frequency 2
+            Math.random()  // frequency 3
+        ];
+
+        this.time = 0;
 
         // debug
         this.addChildren(BABYLON.MeshBuilder.CreateBox('', {width:0.5, height:1, depth:0.5}, this.getScene()));
@@ -32,6 +45,10 @@ class Building extends GameObject{
         this.priceTag.className = 'priceTag';
         this.priceTag.innerHTML = "99999";
         this.priceTag.appendChild(this.arrowUpTag);
+
+        this.getScene().registerBeforeRender(() => {
+            this.updatePrice()
+        })
     }
 
     spawn(callback) {
@@ -109,9 +126,27 @@ class Building extends GameObject{
     }
 
     updatePrice() {
+        this._oldPrice = this.price;
+        this.time += 0.005;
+        this.price = Math.floor(
+            this.basePrice +
+            this.parameters[0]*this.time+
+            this.parameters[1]*
+            Math.sin(this.parameters[2]*this.time) *
+            Math.cos(this.parameters[3]*this.time) *
+            Math.sin(this.parameters[4]*this.time)
+        );
+
+        let arrow = this._oldArrow;
+        if (this._oldPrice > this.price) {
+            arrow = this.arrowDownTag;
+            this._oldArrow = arrow;
+        } else if (this._oldPrice < this.price) {
+            arrow = this.arrowUpTag;
+            this._oldArrow = arrow;
+        }
+        // display
         this.priceTag.innerHTML = this.price;
+        this.priceTag.appendChild(arrow);
     }
-
-
-
 }
