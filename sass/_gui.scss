@@ -41,5 +41,17 @@
     color: #eee;
     text-shadow: 0 5px 3px #000;
   }
+}
 
+.priceTag {
+  position:absolute;
+  top:0;
+  left:0;
+  pointer-events: none;
+  padding:5px;
+  color: #333;
+  font-size:0.8em;
+  font-family: 'Titillium Web', sans-serif;
+  background-color: rgba(230, 230, 230, 0.5);
+  white-space: nowrap;
 }

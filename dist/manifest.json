@@ -2,5 +2,6 @@
   "name": "Letigo",
   "xwalk_app_version": "0.0.1",
   "start_url": "index.html",
-  "xwalk_package_id": "com.pixelcodr.letigo"
+  "xwalk_package_id": "com.pixelcodr.letigo",
+  "display": "fullscreen"
 }

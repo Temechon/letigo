@@ -8,10 +8,30 @@ class Building extends GameObject{
 
         this.position = position;
 
+        // The old price of this building (to know if the price is rising of decreasing)
+        this._oldPrice = 0;
+
+        // The price of this building
+        this.price = 0;
+
         // debug
         this.addChildren(BABYLON.MeshBuilder.CreateBox('', {width:0.5, height:1, depth:0.5}, this.getScene()));
 
         this.setReady();
+
+
+        // Arrows
+        this.arrowUpTag = document.createElement('i');
+        this.arrowUpTag.className = 'fa fa-arrow-up';
+
+        this.arrowDownTag = document.createElement('i');
+        this.arrowDownTag.className = 'fa fa-arrow-down';
+
+        // Price label
+        this.priceTag = document.createElement('div');
+        this.priceTag.className = 'priceTag';
+        this.priceTag.innerHTML = "99999";
+        this.priceTag.appendChild(this.arrowUpTag);
     }
 
     spawn(callback) {
@@ -38,7 +58,7 @@ class Building extends GameObject{
             scaling.setKeys([
                 { frame: 0, value: BABYLON.Vector3.Zero() },
                 { frame: quarter*3, value: new BABYLON.Vector3(1.2,1.2,1.2) },
-                { frame: quarter*4, value: new BABYLON.Vector3(1,1,1) },
+                { frame: quarter*4, value: new BABYLON.Vector3(1,1,1) }
             ]);
             let f = new BABYLON.ElasticEase();
             f.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
@@ -55,8 +75,43 @@ class Building extends GameObject{
             this.animations.push(rotation);
         }
 
-        this.getScene().beginAnimation(this, 0, duration, false, 1, callback);
+        this.getScene().beginAnimation(this, 0, duration, false, 1, () => {
+            this.displayPrice();
+            if (callback) {
+                callback();
+            }
+        });
     }
+
+    /**
+     * Returns screen coordinates of the building
+     */
+    _project() {
+        //this.scene.updateTransformMatrix();
+        var tmpPos = this.position.clone();
+        return BABYLON.Vector3.Project(
+            tmpPos,
+            BABYLON.Matrix.Identity(),
+            this.getScene().getTransformMatrix(),
+            this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine())
+        );
+    };
+
+    displayPrice() {
+        document.getElementsByTagName('body')[0].appendChild(this.priceTag);
+        var p = this._project();
+
+        p.y += this.priceTag.clientHeight / 2;
+        p.x -= this.priceTag.clientWidth / 2;
+
+        this.priceTag.style.top = p.y + "px";
+        this.priceTag.style.left = p.x + "px";
+    }
+
+    updatePrice() {
+        this.priceTag.innerHTML = this.price;
+    }
+
 
 
 }

@@ -8,7 +8,7 @@ class Game {
     constructor(canvasId) {
 
         let canvas          = document.getElementById(canvasId);
-        this.engine         = new BABYLON.Engine(canvas, false, null, false);
+        this.engine         = new BABYLON.Engine(canvas, true, null, false);
 
         // Contains all loaded assets needed for this state
         this.assets  = [];
@@ -93,17 +93,12 @@ class Game {
         setInterval(() => {
             this.build(this.getRandomPosition());
         }, 200);
-
-        //for (let p of cell.positions) {
-        //    let b = new Building(this, p);
-        //    b.spawn();
-        //}
     }
 
     /**
      * Returns an integer in [min, max[
      */
-    _randomNumber(min, max) {
+    static _randomNumber(min, max) {
         if (min === max) {
             return (min);
         }
@@ -111,9 +106,13 @@ class Game {
         return Math.floor(((random * (max - min)) + min));
     }
 
+    /**
+     * Returns a random available position, removes it from availablePositions
+     * and push it to takenPositions
+     * @returns {T}
+     */
     getRandomPosition() {
-        let ind = this._randomNumber(0,this.availablePositions.length);
-        console.log(ind);
+        let ind = Game._randomNumber(0,this.availablePositions.length);
         let res = this.availablePositions.splice(ind, 1)[0];
         this.takenPositions.push(res);
         return res;
@@ -125,6 +124,5 @@ class Game {
             b.spawn();
         }
     }
-
 
 }
