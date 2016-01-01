@@ -3,5 +3,14 @@
   "xwalk_app_version": "0.0.1",
   "start_url": "index.html",
   "xwalk_package_id": "com.pixelcodr.letigo",
-  "display": "fullscreen"
+  "display": "fullscreen",
+  "orientation": "landscape",
+
+  "xwalk_launch_screen": {
+    "ready_when": "custom",
+    "landscape": {
+      "background_color": "#ffffff",
+      "image": "img/splashscreen_icon.jpg"
+    }
+  }
 }

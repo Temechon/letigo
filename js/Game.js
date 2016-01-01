@@ -1,6 +1,14 @@
 // The function onload is loaded when the DOM has been loaded
-window.addEventListener("DOMContentLoaded", function() {
-    new Game('game-canvas');
+window.addEventListener("DOMContentLoaded", () => {
+
+    setTimeout(() => {
+        // check that the window.screen.show method is available
+        if (window.screen.show) {
+            window.screen.show();
+        }
+
+        new Game('game-canvas');
+    }, 3500);
 });
 
 
@@ -22,6 +30,20 @@ class Game {
         // Positions with a building on it
         this.takenPositions = [];
 
+        // The mansion of the city
+        this.mansion = null;
+
+        // The player money
+        this.money = 50;
+
+        this.guiManager = new GUIManager(this);
+
+        // At each tick, a month is spent.
+        this.monthTimer = null;
+
+        // The total time spent
+        this.monthTime  = -1;
+
         // Resize window event
         window.addEventListener("resize", () => {
             this.engine.resize();
@@ -34,8 +56,8 @@ class Game {
 
         let scene = new BABYLON.Scene(this.engine);
         // Camera attached to the canvas
-        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(9.4, 15, -14), scene);
-        camera.rotation.x = 0.5;
+        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(-14, 17, -20), scene);
+        camera.rotation.x = camera.rotation.y = 0.65;
         camera.attachControl(this.engine.getRenderingCanvas());
 
         // Hemispheric light to light the scene
@@ -51,8 +73,11 @@ class Game {
         // The loader
         let loader =  new BABYLON.AssetsManager(this.scene);
 
-        //    var meshTask = this.loader.addMeshTask("skull task", "", "./assets/", "block02.babylon");
-        //    meshTask.onSuccess = this._initMesh;
+        let meshTask = loader.addMeshTask("city", "", "./assets/", "city.babylon");
+        meshTask.onSuccess = (t) => {
+
+            this.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
+        };
 
         loader.onFinish = () => {
 
@@ -82,17 +107,17 @@ class Game {
             }
         });
 
+        this.monthTimer = new Timer(1000, this.scene, {repeat:-1});
+        this.monthTimer.callback = () => {
+            this._addMonth();
+        };
 
-        for (let x=0; x<5; x++) {
-            for (let z=0; z<5; z++) {
-                let cell = new Cell(this);
-                cell.updatePosition(new BABYLON.Vector3(x*5, 0, z*5));
-                this.availablePositions.push(...cell.positions);
-            }
-        }
         setInterval(() => {
-            this.build(this.getRandomPosition());
-        }, 200);
+            let rp = this.getRandomPosition();
+            if (rp){
+                this.build(rp);
+            }
+        }, 1500);
     }
 
     /**
@@ -114,12 +139,15 @@ class Game {
     getRandomPosition() {
         let ind = Game.randomNumber(0,this.availablePositions.length);
         let res = this.availablePositions.splice(ind, 1)[0];
-        this.takenPositions.push(res);
-        return res;
+        if (res) {
+            this.takenPositions.push(res);
+            return res;
+        }
+        return null;
     }
 
     build(position) {
-        new Building(this, position);
+        new House(this, position);
     }
 
     cleanPosition(building) {
@@ -129,6 +157,30 @@ class Game {
                this.availablePositions.push(pos);
            }
         });
+    }
+
+    /**
+     * Start the game by removing all building built during the menu time
+     */
+    start() {
+        for (let ind=0; ind<this.scene.meshes.length; ind++) {
+            let m = this.scene.meshes[ind];
+            if (m instanceof House) {
+                m.dispose();
+                ind--;
+            }
+        }
+        // Start the month timer
+        this.monthTimer.reset();
+        this.monthTimer.start();
+    }
+
+    /**
+     * Increment the month/year timer, and updates the game GUI
+     */
+    _addMonth() {
+        this.monthTime ++;
+        this.guiManager.updateGui();
     }
 
 }

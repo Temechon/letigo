@@ -1,5 +1,6 @@
 /**
- * A building is a structure that can be bought by the player
+ * A building is a structure that can be bought by the player.
+ * House and Mansion are two directs subclasses
  */
 "use strict";
 
@@ -15,8 +16,6 @@ var Building = (function (_GameObject) {
     _inherits(Building, _GameObject);
 
     function Building(game, position) {
-        var _this = this;
-
         _classCallCheck(this, Building);
 
         _get(Object.getPrototypeOf(Building.prototype), "constructor", this).call(this, game);
@@ -27,20 +26,6 @@ var Building = (function (_GameObject) {
         // Knowing if the price is rising of decreasing)
         this._oldPrice = 0;
         this._oldArrow = null;
-
-        // The time that a house can be bought
-        this.canBuyTime = Game.randomNumber(5000, 10000);
-        this.timer = new Timer(this.canBuyTime, this.getScene(), { autostart: true, autodestroy: true });
-        this.timer.onFinish = function () {
-            // If the player doesn't want to buy this building, make it disapear
-            _this.demolish(function () {
-                _this.game.cleanPosition(_this);
-            });
-        };
-        this.timer.start();
-
-        // Has this building been bought ?
-        this.bought = false;
 
         // The current price of this building
         this.price = 0;
@@ -54,11 +39,6 @@ var Building = (function (_GameObject) {
         Math.random() // frequency 3
         ];
 
-        // placeholder shape
-        var cube = BABYLON.MeshBuilder.CreateBox('', { width: 0.5, height: 1, depth: 0.5 }, this.getScene());
-        cube.position.y = 0.5;
-        this.addChildren(cube);
-
         // Arrows
         //this.arrowTag = document.createElement('i');
         //
@@ -70,98 +50,9 @@ var Building = (function (_GameObject) {
         //this.priceTag.className = 'priceTag';
         //this.priceTag.appendChild(this.priceText);
         //this.priceTag.appendChild(this.arrowTag);
-
-        // Set ready !
-        this.setReady();
-
-        // Build it !
-        this.build();
     }
 
-    /**
-     * Remove this building
-     */
-
     _createClass(Building, [{
-        key: "demolish",
-        value: function demolish(callback) {
-
-            var duration = 1000;
-            var fps = 20;
-            var quarter = duration * fps * 0.001 / 4;
-
-            this.animations = [];
-            // Position animation
-            var position = new BABYLON.Animation("", "position.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            position.setKeys([{ frame: 0, value: this.position.y }, { frame: quarter, value: this.position.y + 1 }, { frame: quarter * 4, value: 0 }]);
-            var e = new BABYLON.CubicEase();
-            e.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
-            position.setEasingFunction(e);
-            this.animations.push(position);
-
-            // Scaling
-            var scaling = new BABYLON.Animation("", "scaling", fps, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            scaling.setKeys([{ frame: 0, value: new BABYLON.Vector3(1, 1, 1) }, { frame: quarter * 2, value: new BABYLON.Vector3(1.2, 1.2, 1.2) }, { frame: quarter * 4, value: BABYLON.Vector3.Zero() }]);
-            this.animations.push(scaling);
-
-            // Rotation
-            var rotation = new BABYLON.Animation("", "rotation.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            rotation.setKeys([{ frame: 0, value: 0 }, { frame: quarter * 4, value: Math.PI * 4 }]);
-            rotation.setEasingFunction(e);
-            this.animations.push(rotation);
-
-            this.getScene().beginAnimation(this, 0, duration, false, 1, function () {
-                callback();
-            });
-        }
-    }, {
-        key: "build",
-        value: function build(callback) {
-            var duration = 1000;
-            var fps = 20;
-            var quarter = duration * fps * 0.001 / 4;
-
-            this.animations = [];
-            // Position animation
-            var position = new BABYLON.Animation("", "position.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            position.setKeys([{ frame: 0, value: 0 }, { frame: quarter, value: this.position.y + 1 }, { frame: quarter * 4, value: this.position.y }]);
-            var e = new BABYLON.CubicEase();
-            e.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
-            position.setEasingFunction(e);
-            this.animations.push(position);
-
-            // Scaling
-            var scaling = new BABYLON.Animation("", "scaling", fps, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            scaling.setKeys([{ frame: 0, value: BABYLON.Vector3.Zero() }, { frame: quarter * 3, value: new BABYLON.Vector3(1.2, 1.2, 1.2) }, { frame: quarter * 4, value: new BABYLON.Vector3(1, 1, 1) }]);
-            var f = new BABYLON.ElasticEase();
-            f.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
-            scaling.setEasingFunction(f);
-            this.animations.push(scaling);
-
-            // Rotation
-            var rotation = new BABYLON.Animation("", "rotation.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-            rotation.setKeys([{ frame: 0, value: 0 }, { frame: quarter * 4, value: Math.PI * 2 }]);
-            rotation.setEasingFunction(e);
-            this.animations.push(rotation);
-
-            this.getScene().beginAnimation(this, 0, duration, false, 1, function () {
-                //this.displayPrice();
-                if (callback) {
-                    callback();
-                }
-            });
-        }
-
-        /**
-         * Returns screen coordinates of the building
-         */
-    }, {
-        key: "_project",
-        value: function _project() {
-            var tmpPos = this.position.clone();
-            return BABYLON.Vector3.Project(tmpPos, BABYLON.Matrix.Identity(), this.getScene().getTransformMatrix(), this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine()));
-        }
-    }, {
         key: "displayPrice",
         value: function displayPrice() {
             document.getElementsByTagName('body')[0].appendChild(this.priceTag);
@@ -196,4 +87,3 @@ var Building = (function (_GameObject) {
 
     return Building;
 })(GameObject);
-//# sourceMappingURL=Building.js.map

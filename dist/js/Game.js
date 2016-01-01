@@ -3,12 +3,18 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 window.addEventListener("DOMContentLoaded", function () {
-    new Game('game-canvas');
+
+    setTimeout(function () {
+        // check that the window.screen.show method is available
+        if (window.screen.show) {
+            window.screen.show();
+        }
+
+        new Game('game-canvas');
+    }, 3500);
 });
 
 var Game = (function () {
@@ -32,6 +38,20 @@ var Game = (function () {
         // Positions with a building on it
         this.takenPositions = [];
 
+        // The mansion of the city
+        this.mansion = null;
+
+        // The player money
+        this.money = 50;
+
+        this.guiManager = new GUIManager(this);
+
+        // At each tick, a month is spent.
+        this.monthTimer = null;
+
+        // The total time spent
+        this.monthTime = -1;
+
         // Resize window event
         window.addEventListener("resize", function () {
             _this.engine.resize();
@@ -46,8 +66,8 @@ var Game = (function () {
 
             var scene = new BABYLON.Scene(this.engine);
             // Camera attached to the canvas
-            var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(9.4, 15, -14), scene);
-            camera.rotation.x = 0.5;
+            var camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(-14, 17, -20), scene);
+            camera.rotation.x = camera.rotation.y = 0.65;
             camera.attachControl(this.engine.getRenderingCanvas());
 
             // Hemispheric light to light the scene
@@ -65,8 +85,11 @@ var Game = (function () {
             // The loader
             var loader = new BABYLON.AssetsManager(this.scene);
 
-            //    var meshTask = this.loader.addMeshTask("skull task", "", "./assets/", "block02.babylon");
-            //    meshTask.onSuccess = this._initMesh;
+            var meshTask = loader.addMeshTask("city", "", "./assets/", "city.babylon");
+            meshTask.onSuccess = function (t) {
+
+                _this2.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
+            };
 
             loader.onFinish = function () {
 
@@ -98,18 +121,17 @@ var Game = (function () {
                 }
             });
 
-            for (var x = 0; x < 5; x++) {
-                for (var z = 0; z < 5; z++) {
-                    var _availablePositions;
+            this.monthTimer = new Timer(1000, this.scene, { repeat: -1 });
+            this.monthTimer.callback = function () {
+                _this3._addMonth();
+            };
 
-                    var cell = new Cell(this);
-                    cell.updatePosition(new BABYLON.Vector3(x * 5, 0, z * 5));
-                    (_availablePositions = this.availablePositions).push.apply(_availablePositions, _toConsumableArray(cell.positions));
-                }
-            }
             setInterval(function () {
-                _this3.build(_this3.getRandomPosition());
-            }, 200);
+                var rp = _this3.getRandomPosition();
+                if (rp) {
+                    _this3.build(rp);
+                }
+            }, 1500);
         }
 
         /**
@@ -126,13 +148,16 @@ var Game = (function () {
         value: function getRandomPosition() {
             var ind = Game.randomNumber(0, this.availablePositions.length);
             var res = this.availablePositions.splice(ind, 1)[0];
-            this.takenPositions.push(res);
-            return res;
+            if (res) {
+                this.takenPositions.push(res);
+                return res;
+            }
+            return null;
         }
     }, {
         key: "build",
         value: function build(position) {
-            new Building(this, position);
+            new House(this, position);
         }
     }, {
         key: "cleanPosition",
@@ -145,6 +170,34 @@ var Game = (function () {
                     _this4.availablePositions.push(pos);
                 }
             });
+        }
+
+        /**
+         * Start the game by removing all building built during the menu time
+         */
+    }, {
+        key: "start",
+        value: function start() {
+            for (var ind = 0; ind < this.scene.meshes.length; ind++) {
+                var m = this.scene.meshes[ind];
+                if (m instanceof House) {
+                    m.dispose();
+                    ind--;
+                }
+            }
+            // Start the month timer
+            this.monthTimer.reset();
+            this.monthTimer.start();
+        }
+
+        /**
+         * Increment the month/year timer, and updates the game GUI
+         */
+    }, {
+        key: "_addMonth",
+        value: function _addMonth() {
+            this.monthTime++;
+            this.guiManager.updateGui();
         }
     }], [{
         key: "randomNumber",
@@ -159,4 +212,3 @@ var Game = (function () {
 
     return Game;
 })();
-//# sourceMappingURL=Game.js.map

@@ -164,4 +164,3 @@ var Timer = (function () {
 
     return Timer;
 })();
-//# sourceMappingURL=Timer.js.map
