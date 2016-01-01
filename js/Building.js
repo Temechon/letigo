@@ -19,6 +19,9 @@ class Building extends GameObject{
         this.basePrice = 1000;
         let dr = this.basePrice/4;
 
+        // Time to compute the building price
+        this._time = 0;
+
         this.parameters = [
             Game.randomNumber(-7,7), //inflation
             Game.randomNumber(this.basePrice-dr, this.basePrice+dr), // range
@@ -28,23 +31,23 @@ class Building extends GameObject{
         ];
 
         // Arrows
-        //this.arrowTag = document.createElement('i');
-        //
-        //// Price label
-        //this.priceText = document.createElement('span');
-        //this.priceText.innerHTML = '99999';
-        //
-        //this.priceTag = document.createElement('div');
-        //this.priceTag.className = 'priceTag';
-        //this.priceTag.appendChild(this.priceText);
-        //this.priceTag.appendChild(this.arrowTag);
+        this.arrowTag = document.createElement('i');
+
+        // Price label
+        this.priceText = document.createElement('span');
+        this.priceText.innerHTML = '99999';
+
+        this.priceTag = document.createElement('div');
+        this.priceTag.className = 'priceTag';
+        this.priceTag.appendChild(this.priceText);
+        this.priceTag.appendChild(this.arrowTag);
     }
 
     displayPrice() {
         document.getElementsByTagName('body')[0].appendChild(this.priceTag);
         var p = this._project();
 
-        p.y += this.priceTag.clientHeight / 2;
+        // center horizontally
         p.x -= this.priceTag.clientWidth / 2;
 
         this.priceTag.style.top = Math.floor(p.y) + "px";
@@ -53,14 +56,14 @@ class Building extends GameObject{
 
     updatePrice() {
         this._oldPrice = this.price;
-        this.time += 0.005;
+        this._time += 0.009;
         this.price = Math.floor(
             this.basePrice +
-            this.parameters[0]*this.time+
+            this.parameters[0]*this._time+
             this.parameters[1]*
-            Math.sin(this.parameters[2]*this.time) *
-            Math.cos(this.parameters[3]*this.time) *
-            Math.sin(this.parameters[4]*this.time)
+            Math.sin(this.parameters[2]*this._time) *
+            Math.cos(this.parameters[3]*this._time) *
+            Math.sin(this.parameters[4]*this._time)
         );
 
         let arrow = this._oldArrow;
@@ -75,4 +78,25 @@ class Building extends GameObject{
         this.arrowTag.className = arrow;
         this.priceText.innerHTML = this.price;
     }
+
+    dispose() {
+        // remove price tags
+        if (this.priceTag.parentNode) {
+            this.priceTag.parentNode.removeChild(this.priceTag);
+        }
+        super.dispose();
+    }
+
+    /**
+     * Returns screen coordinates of the building
+     */
+    _project() {
+        var tmpPos = this.position.clone();
+        return BABYLON.Vector3.Project(
+            tmpPos,
+            BABYLON.Matrix.Identity(),
+            this.getScene().getTransformMatrix(),
+            this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine())
+        );
+    };
 }

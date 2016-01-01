@@ -1,1 +1,70 @@
-<!DOCTYPE html><html><head><title>Letigo</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,user-scalable=no"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"><script src="http://livejs.com/live.js"></script><link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,900" rel="stylesheet" type="text/css"><script src="js/libs/babylon.max.js"></script><link rel="stylesheet" href="css/main.css"><script src="js/Game.js"></script><script src="js/GameObject.js"></script><script src="js/Timer.js"></script><script src="js/CityManager.js"></script><script src="js/GUIManager.js"></script><script src="js/Building.js"></script><script src="js/House.js"></script></head><body><div id="game-menu" class="game-menu"><div class="title">Villa Town</div><div class="subtitle">Buy the villa as fast as possible!</div><div class="play"><i id="play" class="fa fa-play-circle"></i></div></div><div id="game-gui" class="game-gui"><div class="time"><i class="icon fa fa-hourglass-half"></i> <span id="year" class="year">0 years</span> <span id="month" class="month">0 months</span></div><div class="cash"><i class="icon fa fa-money"></i> <span class="cash">0 $</span></div></div><canvas id="game-canvas"></canvas></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Letigo</title>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <!--Font awesome-->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'/>
+    <script src="http://livejs.com/live.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,900' rel='stylesheet' type='text/css'>
+
+
+
+    <!--Babylon-->
+    <script src="js/libs/babylon.max.js"></script>
+
+    <!--Css-->
+    <link rel='stylesheet' href='css/main.css'/>
+
+    <!--All js file to run this game -->
+    
+    
+    
+    <!--Dev version-->
+    <script src="js/Game.js"></script>
+    <script src="js/GameObject.js"></script>
+    <script src="js/Timer.js"></script>
+    <script src="js/CityManager.js"></script>
+    <script src="js/GUIManager.js"></script>
+    
+    <script src="js/Building.js"></script>
+    <script src="js/House.js"></script>
+    
+    <!--Dist version-->
+    <!--<script src="js/index.js"></script>-->
+    
+    
+</head>
+<body>
+
+<div id="game-menu" class="game-menu">
+
+    <div class="title">
+        <!--Dream<br/>-->
+        <!--Home-->
+        Villa Town
+    </div>
+    <div class="subtitle">Buy the villa as fast as possible! </div>
+
+    <div class="play"><i id="play" class="fa fa-play-circle"></i></div>
+
+</div>
+<div id='game-gui' class='game-gui'>
+
+    <div class='time'>
+        <i class="icon fa fa-hourglass-half"></i>
+        <span id='year' class='year'>0 years</span>
+        <span id='month' class='month'>0 months</span>
+    </div>
+    
+    <div class='cash'>
+        <i class="icon fa fa-money"></i>
+        <span class="cash">0 $</span>
+    </div>
+
+</div>
+    <canvas id="game-canvas"></canvas>
+
+</body>
+</html>

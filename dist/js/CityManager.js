@@ -72,3 +72,4 @@ var CityManager = (function () {
 
     return CityManager;
 })();
+//# sourceMappingURL=CityManager.js.map

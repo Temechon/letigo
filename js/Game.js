@@ -1,14 +1,14 @@
 // The function onload is loaded when the DOM has been loaded
 window.addEventListener("DOMContentLoaded", () => {
 
+
     setTimeout(() => {
         // check that the window.screen.show method is available
         if (window.screen.show) {
             window.screen.show();
         }
-
         new Game('game-canvas');
-    }, 3500);
+    }, 2500);
 });
 
 
@@ -77,6 +77,7 @@ class Game {
         meshTask.onSuccess = (t) => {
 
             this.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
+            this.availablePositions = [this.availablePositions[0]];
         };
 
         loader.onFinish = () => {
@@ -112,12 +113,13 @@ class Game {
             this._addMonth();
         };
 
-        setInterval(() => {
+        this.buyTimer = new Timer(1000, this.scene, {autostart:true, repeat:-1});
+        this.buyTimer.callback = () => {
             let rp = this.getRandomPosition();
             if (rp){
                 this.build(rp);
             }
-        }, 1500);
+        };
     }
 
     /**
@@ -155,6 +157,7 @@ class Game {
            if (pos.equals(building.position)) {
                this.takenPositions.splice(index, 1);
                this.availablePositions.push(pos);
+               return;
            }
         });
     }

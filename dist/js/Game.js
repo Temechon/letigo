@@ -12,9 +12,8 @@ window.addEventListener("DOMContentLoaded", function () {
         if (window.screen.show) {
             window.screen.show();
         }
-
         new Game('game-canvas');
-    }, 3500);
+    }, 2500);
 });
 
 var Game = (function () {
@@ -89,6 +88,7 @@ var Game = (function () {
             meshTask.onSuccess = function (t) {
 
                 _this2.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
+                _this2.availablePositions = [_this2.availablePositions[0]];
             };
 
             loader.onFinish = function () {
@@ -126,12 +126,13 @@ var Game = (function () {
                 _this3._addMonth();
             };
 
-            setInterval(function () {
+            this.buyTimer = new Timer(1000, this.scene, { autostart: true, repeat: -1 });
+            this.buyTimer.callback = function () {
                 var rp = _this3.getRandomPosition();
                 if (rp) {
                     _this3.build(rp);
                 }
-            }, 1500);
+            };
         }
 
         /**
@@ -168,6 +169,7 @@ var Game = (function () {
                 if (pos.equals(building.position)) {
                     _this4.takenPositions.splice(index, 1);
                     _this4.availablePositions.push(pos);
+                    return;
                 }
             });
         }
@@ -212,3 +214,4 @@ var Game = (function () {
 
     return Game;
 })();
+//# sourceMappingURL=Game.js.map

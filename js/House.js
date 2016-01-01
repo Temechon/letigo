@@ -4,21 +4,27 @@ class House extends Building {
         super(game, position);
 
         // placeholder shape
-        let cube = BABYLON.MeshBuilder.CreateBox('', {width:0.5, height:1, depth:0.5}, this.getScene());
-        cube.position.y = 0.5;
+        let cube = BABYLON.MeshBuilder.CreateBox('', {width:1.5, height:3, depth:1.5}, this.getScene());
+        cube.position.y = 1.5;
         this.addChildren(cube);
 
         // The time that a house can be bought
-        this.canBuyTime = Game.randomNumber(5000, 10000);
-        this.timer = new Timer(this.canBuyTime, this.getScene(), {autostart:true, autodestroy:true});
+        this.canBuyTime = Game.randomNumber(8000, 13000);
+
+        // Timer to check the building end
+        this.timer = new Timer(this.canBuyTime, this.getScene(), {autodestroy:true});
         this.timer.onFinish = () => {
             this.dispose();
         };
-        this.timer.start();
+
+        // Timer to update the building proce
+        this.priceTimer = new Timer(100, this.getScene(), {autodestroy:true, repeat:-1});
+        this.priceTimer.callback = () => {
+            this.updatePrice();
+        };
 
         // Has this building been bought ?
         this.bought = false;
-
 
         this.build();
     }
@@ -121,23 +127,12 @@ class House extends Building {
 
 
         this.getScene().beginAnimation(this, 0, duration, false, 1, () => {
-            //this.displayPrice();
+            this.timer.start();
+            this.priceTimer.start();
+            this.displayPrice();
             if (callback) {
                 callback();
             }
         });
     }
-
-    /**
-     * Returns screen coordinates of the building
-     */
-    _project() {
-        var tmpPos = this.position.clone();
-        return BABYLON.Vector3.Project(
-            tmpPos,
-            BABYLON.Matrix.Identity(),
-            this.getScene().getTransformMatrix(),
-            this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine())
-        );
-    };
 }

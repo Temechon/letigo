@@ -1,1 +1,110 @@
-body,html{margin:0;padding:0;overflow:hidden}#game-canvas,body,html{width:100%;height:100%}.hide{opacity:0;transition:opacity .5s linear}.game-menu{position:absolute;z-index:2;width:calc(100% - 2*15px);height:calc(100% - 2*15px);top:0;left:0;padding:15px;background-color:rgba(0,0,0,.7);pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-align-items:center;-ms-flex-align:center;align-items:center}.game-menu .title{width:100%;margin-bottom:30px;font-size:4.5em;text-transform:uppercase;text-shadow:0 5px 3px #000;font-weight:900}.game-menu .subtitle,.game-menu .title{text-align:center;color:#eee;font-family:Titillium Web,sans-serif}.game-menu .subtitle{font-size:1.5em;font-weight:400;text-shadow:0 2px 3px #000}.game-menu .play{width:250px;margin:auto;text-align:center;font-size:9em;color:#eee;pointer-events:all}.game-menu .press{color:#2cf06f}.priceTag{padding:5px;color:#000;font-size:.8em;background-color:hsla(0,0%,90%,.5);white-space:nowrap}.game-gui,.priceTag{position:absolute;top:0;left:0;pointer-events:none;font-family:Titillium Web,sans-serif;font-weight:400}.game-gui{z-index:1;width:calc(100% - 2*30px);height:calc(100% - 2*30px);padding:30px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;color:#eee;font-size:1.2em}.game-gui .icon{width:30px;text-align:center}
+@-webkit-keyframes fade-out {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+@keyframes fade-out {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; }
+
+#game-canvas {
+  width: 100%;
+  height: 100%; }
+
+.hide {
+  opacity: 0;
+  transition: opacity 0.5s linear; }
+
+.game-menu {
+  position: absolute;
+  z-index: 3;
+  width: calc(100% - 2*15px);
+  height: calc(100% - 2*15px);
+  top: 0;
+  left: 0;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .game-menu .title {
+    width: 100%;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 4.5em;
+    color: #eee;
+    text-transform: uppercase;
+    text-shadow: 0 5px 3px black;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 900; }
+  .game-menu .subtitle {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 400;
+    color: #eee;
+    text-shadow: 0 2px 3px #000; }
+  .game-menu .play {
+    width: 250px;
+    margin: auto;
+    text-align: center;
+    font-size: 9em;
+    color: #eee;
+    pointer-events: all; }
+  .game-menu .press {
+    color: #2CF06F; }
+
+.priceTag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  padding: 5px;
+  color: black;
+  font-size: 0.8em;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 400;
+  background-color: rgba(230, 230, 230, 0.5);
+  white-space: nowrap; }
+
+.game-gui {
+  position: absolute;
+  z-index: 2;
+  width: calc(100% - 2*30px);
+  height: calc(100% - 2*30px);
+  top: 0;
+  left: 0;
+  padding: 30px;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #eee;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 400;
+  font-size: 1.2em; }
+  .game-gui .icon {
+    width: 30px;
+    text-align: center; }

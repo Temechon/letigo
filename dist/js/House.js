@@ -19,17 +19,24 @@ var House = (function (_Building) {
         _get(Object.getPrototypeOf(House.prototype), "constructor", this).call(this, game, position);
 
         // placeholder shape
-        var cube = BABYLON.MeshBuilder.CreateBox('', { width: 0.5, height: 1, depth: 0.5 }, this.getScene());
-        cube.position.y = 0.5;
+        var cube = BABYLON.MeshBuilder.CreateBox('', { width: 1.5, height: 3, depth: 1.5 }, this.getScene());
+        cube.position.y = 1.5;
         this.addChildren(cube);
 
         // The time that a house can be bought
-        this.canBuyTime = Game.randomNumber(5000, 10000);
-        this.timer = new Timer(this.canBuyTime, this.getScene(), { autostart: true, autodestroy: true });
+        this.canBuyTime = Game.randomNumber(8000, 13000);
+
+        // Timer to check the building end
+        this.timer = new Timer(this.canBuyTime, this.getScene(), { autodestroy: true });
         this.timer.onFinish = function () {
             _this.dispose();
         };
-        this.timer.start();
+
+        // Timer to update the building proce
+        this.priceTimer = new Timer(100, this.getScene(), { autodestroy: true, repeat: -1 });
+        this.priceTimer.callback = function () {
+            _this.updatePrice();
+        };
 
         // Has this building been bought ?
         this.bought = false;
@@ -91,6 +98,8 @@ var House = (function (_Building) {
     }, {
         key: "build",
         value: function build(callback) {
+            var _this3 = this;
+
             var duration = 1000;
             var fps = 20;
             var quarter = duration * fps * 0.001 / 4;
@@ -119,23 +128,16 @@ var House = (function (_Building) {
             this.animations.push(rotation);
 
             this.getScene().beginAnimation(this, 0, duration, false, 1, function () {
-                //this.displayPrice();
+                _this3.timer.start();
+                _this3.priceTimer.start();
+                _this3.displayPrice();
                 if (callback) {
                     callback();
                 }
             });
         }
-
-        /**
-         * Returns screen coordinates of the building
-         */
-    }, {
-        key: "_project",
-        value: function _project() {
-            var tmpPos = this.position.clone();
-            return BABYLON.Vector3.Project(tmpPos, BABYLON.Matrix.Identity(), this.getScene().getTransformMatrix(), this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine()));
-        }
     }]);
 
     return House;
 })(Building);
+//# sourceMappingURL=House.js.map
