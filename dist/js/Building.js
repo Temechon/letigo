@@ -33,8 +33,8 @@ var Building = (function (_GameObject) {
         this._oldArrow = null;
 
         // The current price of this building
-        this.price = 0;
         this.basePrice = 1000;
+        this.price = this.basePrice;
         var dr = this.basePrice / 4;
 
         // Time to compute the building price

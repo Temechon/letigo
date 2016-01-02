@@ -140,7 +140,18 @@ var Game = (function () {
             this.scene.onPointerDown = function (evt, pickResult) {
                 if (pickResult.pickedMesh && pickResult.pickedMesh.parent) {
                     var house = pickResult.pickedMesh.parent;
-                    house.buy();
+
+                    if (house.bought) {
+                        // sell house
+                        _this3.money += house.price;
+                        house.dispose();
+                    } else {
+                        if (house.price <= _this3.money) {
+                            _this3.money -= house.price;
+                            house.buy();
+                        }
+                    }
+                    _this3.guiManager.updateGui();
                 }
             };
         }

@@ -97,6 +97,8 @@ var GameObject = (function (_BABYLON$Mesh) {
                 }
             }
         }
+
+        // Override this.material to affect all children instead
     }, {
         key: "material",
         set: function set(mat) {

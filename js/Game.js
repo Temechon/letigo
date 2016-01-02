@@ -127,7 +127,19 @@ class Game {
         this.scene.onPointerDown = (evt, pickResult) => {
             if (pickResult.pickedMesh && pickResult.pickedMesh.parent) {
                 let house = pickResult.pickedMesh.parent;
-                house.buy();
+
+                if (house.bought) {
+                    // sell house
+                    this.money += house.price;
+                    house.dispose();
+
+                } else {
+                    if (house.price <= this.money) {
+                        this.money -= house.price;
+                        house.buy();
+                    }
+                }
+                this.guiManager.updateGui();
             }
         }
 

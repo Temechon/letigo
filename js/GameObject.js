@@ -57,6 +57,7 @@ class GameObject extends BABYLON.Mesh {
         }
     }
 
+    // Override this.material to affect all children instead
     set material(mat) {
         for (let c of this._children) {
             c.material = mat;

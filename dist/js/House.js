@@ -147,8 +147,13 @@ var House = (function (_Building) {
             if (!red) {
                 red = new BABYLON.StandardMaterial('red', this.getScene());
                 red.emissiveColor = BABYLON.Color3.Red();
+                red.specularColor = BABYLON.Color3.Black();
+                red.freeze();
             }
             this.material = red;
+
+            // Stop timer that demolish this building
+            this.timer.stop();
         }
     }]);
 
