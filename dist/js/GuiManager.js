@@ -16,6 +16,8 @@ var GUIManager = (function () {
         this.year = document.getElementById("year");
         this.month = document.getElementById("month");
 
+        this.money = document.getElementById("cash");
+
         this.init();
     }
 
@@ -73,13 +75,23 @@ var GUIManager = (function () {
             this.gameMenu.style.display = 'none';
             this.game.start();
         }
+
+        /**
+         * Update the game GUI accordingly to the game stats
+         */
     }, {
         key: "updateGui",
         value: function updateGui() {
+
+            // date
             var y = Math.floor(this.game.monthTime / 12);
             var m = this.game.monthTime % 12 + 1;
             this.year.innerHTML = y + " years";
             this.month.innerHTML = m + " months";
+
+            // cash
+            var c = this.game.money;
+            this.money.innerHTML = c + " $";
         }
     }]);
 

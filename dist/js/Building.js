@@ -20,6 +20,8 @@ var Building = (function (_GameObject) {
 
         _get(Object.getPrototypeOf(Building.prototype), 'constructor', this).call(this, game);
 
+        this.name = 'building';
+
         // Building position
         this.position = position.position;
 

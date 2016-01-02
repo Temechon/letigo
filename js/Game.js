@@ -34,7 +34,7 @@ class Game {
         this.mansion = null;
 
         // The player money
-        this.money = 50;
+        this.money = 2000;
 
         this.guiManager = new GUIManager(this);
 
@@ -97,6 +97,7 @@ class Game {
 
     _initGame() {
 
+        // Debug panel
         window.addEventListener("keydown", (evt) => {
             if (evt.keyCode == 32) {
                 if (this.scene.debugLayer._enabled) {
@@ -107,11 +108,13 @@ class Game {
             }
         });
 
+        // Track the time spent
         this.monthTimer = new Timer(1000, this.scene, {repeat:-1});
         this.monthTimer.callback = () => {
             this._addMonth();
         };
 
+        // Build houses!
         this.buyTimer = new Timer(5000, this.scene, {autostart:true, repeat:-1, immediate:true});
         this.buyTimer.callback = () => {
             let rp = this.getRandomPosition();
@@ -119,6 +122,16 @@ class Game {
                 this.build(rp);
             }
         };
+
+        // When the player touch a building
+        this.scene.onPointerDown = (evt, pickResult) => {
+            if (pickResult.pickedMesh && pickResult.pickedMesh.parent) {
+                let house = pickResult.pickedMesh.parent;
+                house.buy();
+            }
+        }
+
+
     }
 
     /**

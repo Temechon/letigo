@@ -56,4 +56,10 @@ class GameObject extends BABYLON.Mesh {
             }
         }
     }
+
+    set material(mat) {
+        for (let c of this._children) {
+            c.material = mat;
+        }
+    }
 }

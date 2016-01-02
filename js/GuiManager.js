@@ -9,6 +9,8 @@ class GUIManager {
         this.year = document.getElementById("year");
         this.month = document.getElementById("month");
 
+        this.money = document.getElementById("cash");
+
         this.init();
     }
 
@@ -46,10 +48,19 @@ class GUIManager {
         this.game.start();
     }
 
+    /**
+     * Update the game GUI accordingly to the game stats
+     */
     updateGui() {
+
+        // date
         let y = Math.floor(this.game.monthTime / 12);
         let m = this.game.monthTime % 12 +1;
         this.year.innerHTML = `${y} years`;
         this.month.innerHTML = `${m} months`;
+
+        // cash
+        let c = this.game.money;
+        this.money.innerHTML = `${c} $`;
     }
 }

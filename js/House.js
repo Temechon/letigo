@@ -9,7 +9,7 @@ class House extends Building {
         this.addChildren(cube);
 
         // The time that a house can be bought
-        this.canBuyTime = Game.randomNumber(80000, 130000);
+        this.canBuyTime = Game.randomNumber(10000, 15000);
 
         // Timer to check the building end
         this.timer = new Timer(this.canBuyTime, this.getScene(), {autodestroy:true});
@@ -135,5 +135,17 @@ class House extends Building {
                 callback();
             }
         });
+    }
+
+    buy() {
+        this.bought = true;
+
+        // Change material
+        let red = this.getScene().getMaterialByName('red');
+        if (!red) {
+            red = new BABYLON.StandardMaterial('red', this.getScene());
+            red.emissiveColor = BABYLON.Color3.Red();
+        }
+        this.material = red;
     }
 }

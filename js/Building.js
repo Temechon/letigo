@@ -7,6 +7,8 @@ class Building extends GameObject{
     constructor(game, position) {
         super(game);
 
+        this.name = 'building';
+
         // Building position
         this.position = position.position;
 
