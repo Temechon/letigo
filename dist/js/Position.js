@@ -34,4 +34,3 @@ var Position = (function () {
 
     return Position;
 })();
-//# sourceMappingURL=Position.js.map

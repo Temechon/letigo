@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var House = (function (_Building) {
     _inherits(House, _Building);
@@ -16,12 +16,14 @@ var House = (function (_Building) {
 
         _classCallCheck(this, House);
 
-        _get(Object.getPrototypeOf(House.prototype), "constructor", this).call(this, game, position);
+        _get(Object.getPrototypeOf(House.prototype), 'constructor', this).call(this, game, position);
 
         // placeholder shape
-        var cube = BABYLON.MeshBuilder.CreateBox('', { width: 1.5, height: 3, depth: 1.5 }, this.getScene());
-        cube.position.y = 1.5;
-        this.addChildren(cube);
+        this.addChildren(this.game.assets['house'].clone('house'));
+
+        //let cube = BABYLON.MeshBuilder.CreateBox('', {width:1.5, height:3, depth:1.5}, this.getScene());
+        //cube.position.y = 1.5;
+        //this.addChildren(cube);
 
         // The time that a house can be bought
         this.canBuyTime = Game.randomNumber(10000, 15000);
@@ -49,7 +51,7 @@ var House = (function (_Building) {
      */
 
     _createClass(House, [{
-        key: "dispose",
+        key: 'dispose',
         value: function dispose() {
             this.timer.stop();
             this.priceTimer.stop();
@@ -62,7 +64,7 @@ var House = (function (_Building) {
          * Remove this building
          */
     }, {
-        key: "demolish",
+        key: 'demolish',
         value: function demolish() {
             var _this2 = this;
 
@@ -92,12 +94,12 @@ var House = (function (_Building) {
             this.animations.push(rotation);
 
             this.getScene().beginAnimation(this, 0, duration, false, 1, function () {
-                _get(Object.getPrototypeOf(House.prototype), "dispose", _this2).call(_this2);
+                _get(Object.getPrototypeOf(House.prototype), 'dispose', _this2).call(_this2);
                 _this2.game.cleanPosition(_this2);
             });
         }
     }, {
-        key: "build",
+        key: 'build',
         value: function build(callback) {
             var _this3 = this;
 
@@ -138,7 +140,7 @@ var House = (function (_Building) {
             });
         }
     }, {
-        key: "buy",
+        key: 'buy',
         value: function buy() {
             this.bought = true;
 
@@ -159,4 +161,3 @@ var House = (function (_Building) {
 
     return House;
 })(Building);
-//# sourceMappingURL=House.js.map

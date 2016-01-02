@@ -22,4 +22,3 @@ var Mansion = (function (_Building) {
 
     return Mansion;
 })(Building);
-//# sourceMappingURL=Mansion.js.map

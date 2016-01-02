@@ -1,19 +1,21 @@
 // The function onload is loaded when the DOM has been loaded
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 window.addEventListener("DOMContentLoaded", function () {
 
-    setTimeout(function () {
-        // check that the window.screen.show method is available
-        if (window.screen.show) {
+    if (window.screen.show) {
+        setTimeout(function () {
+            // check that the window.screen.show method is available
             window.screen.show();
-        }
+            new Game('game-canvas');
+        }, 2500);
+    } else {
         new Game('game-canvas');
-    }, 2500);
+    }
 });
 
 var Game = (function () {
@@ -60,7 +62,7 @@ var Game = (function () {
     }
 
     _createClass(Game, [{
-        key: "_initScene",
+        key: '_initScene',
         value: function _initScene() {
 
             var scene = new BABYLON.Scene(this.engine);
@@ -71,11 +73,14 @@ var Game = (function () {
 
             // Hemispheric light to light the scene
             var h = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
-            h.intensity = 0.9;
+            h.intensity = 0.7;
+
+            var dir = new BABYLON.DirectionalLight('dir', new BABYLON.Vector3(0, -1, -0.5), scene);
+            dir.intensity = 2;
             return scene;
         }
     }, {
-        key: "run",
+        key: 'run',
         value: function run() {
             var _this2 = this;
 
@@ -87,6 +92,7 @@ var Game = (function () {
             var meshTask = loader.addMeshTask("city", "", "./assets/", "city.babylon");
             meshTask.onSuccess = function (t) {
 
+                _this2.assets['house'] = CityManager.GET_HOUSE(t.loadedMeshes);
                 _this2.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
             };
 
@@ -106,7 +112,7 @@ var Game = (function () {
             loader.load();
         }
     }, {
-        key: "_initGame",
+        key: '_initGame',
         value: function _initGame() {
             var _this3 = this;
 
@@ -160,7 +166,7 @@ var Game = (function () {
          * Returns an integer in [min, max[
          */
     }, {
-        key: "getRandomPosition",
+        key: 'getRandomPosition',
 
         /**
          * Returns a random available position, removes it from availablePositions
@@ -177,12 +183,12 @@ var Game = (function () {
             return null;
         }
     }, {
-        key: "build",
+        key: 'build',
         value: function build(position) {
             new House(this, position);
         }
     }, {
-        key: "cleanPosition",
+        key: 'cleanPosition',
         value: function cleanPosition(building) {
             var _this4 = this;
 
@@ -199,7 +205,7 @@ var Game = (function () {
          * Start the game by removing all building built during the menu time
          */
     }, {
-        key: "start",
+        key: 'start',
         value: function start() {
             for (var ind = 0; ind < this.scene.meshes.length; ind++) {
                 var m = this.scene.meshes[ind];
@@ -219,13 +225,13 @@ var Game = (function () {
          * Increment the month/year timer, and updates the game GUI
          */
     }, {
-        key: "_addMonth",
+        key: '_addMonth',
         value: function _addMonth() {
             this.monthTime++;
             this.guiManager.updateGui();
         }
     }], [{
-        key: "randomNumber",
+        key: 'randomNumber',
         value: function randomNumber(min, max) {
             if (min === max) {
                 return min;
@@ -237,4 +243,3 @@ var Game = (function () {
 
     return Game;
 })();
-//# sourceMappingURL=Game.js.map

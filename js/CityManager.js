@@ -11,6 +11,13 @@ class CityManager {
     }
 
     /**
+     * Return the mesh called 'house'
+     */
+    static HOUSE_REGEXP() {
+        return /house/i;
+    }
+
+    /**
      * Returns the list of position
      * {
      * normal:[],
@@ -28,6 +35,24 @@ class CityManager {
                 res.normal.push(new Position(mesh.position));
                 mesh.dispose();
             }
+        }
+
+        return res;
+    }
+
+    static GET_HOUSE(meshes) {
+        let res = null;
+
+        for (let mesh of meshes) {
+            // normal positions
+            var result = CityManager.HOUSE_REGEXP().exec(mesh.name);
+            if (result) {
+                mesh.setEnabled(false);
+                res = mesh;
+            }
+        }
+        if (!res) {
+            console.warn('>> house not found!');
         }
 
         return res;

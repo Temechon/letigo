@@ -1,14 +1,15 @@
 // The function onload is loaded when the DOM has been loaded
 window.addEventListener("DOMContentLoaded", () => {
 
-
-    setTimeout(() => {
-        // check that the window.screen.show method is available
-        if (window.screen.show) {
+    if (window.screen.show) {
+        setTimeout(() => {
+            // check that the window.screen.show method is available
             window.screen.show();
-        }
+            new Game('game-canvas');
+        }, 2500);
+    } else {
         new Game('game-canvas');
-    }, 2500);
+    }
 });
 
 
@@ -62,7 +63,10 @@ class Game {
 
         // Hemispheric light to light the scene
         let h = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0,1,0), scene);
-        h.intensity = 0.9;
+        h.intensity = 0.7;
+
+        let dir = new BABYLON.DirectionalLight('dir', new BABYLON.Vector3(0,-1,-0.5), scene);
+        dir.intensity = 2;
         return scene;
     }
 
@@ -76,7 +80,8 @@ class Game {
         let meshTask = loader.addMeshTask("city", "", "./assets/", "city.babylon");
         meshTask.onSuccess = (t) => {
 
-            this.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
+            this.assets['house']        = CityManager.GET_HOUSE(t.loadedMeshes);
+            this.availablePositions     = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
         };
 
         loader.onFinish = () => {

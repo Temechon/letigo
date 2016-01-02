@@ -4,9 +4,11 @@ class House extends Building {
         super(game, position);
 
         // placeholder shape
-        let cube = BABYLON.MeshBuilder.CreateBox('', {width:1.5, height:3, depth:1.5}, this.getScene());
-        cube.position.y = 1.5;
-        this.addChildren(cube);
+        this.addChildren(this.game.assets['house'].clone('house'));
+
+        //let cube = BABYLON.MeshBuilder.CreateBox('', {width:1.5, height:3, depth:1.5}, this.getScene());
+        //cube.position.y = 1.5;
+        //this.addChildren(cube);
 
         // The time that a house can be bought
         this.canBuyTime = Game.randomNumber(10000, 15000);

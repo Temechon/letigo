@@ -131,4 +131,3 @@ var GameObject = (function (_BABYLON$Mesh) {
 
     return GameObject;
 })(BABYLON.Mesh);
-//# sourceMappingURL=GameObject.js.map
