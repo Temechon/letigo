@@ -6,6 +6,7 @@
 * @param options.autostart If set to true, the timer will autostart. False by default.
  *@param options.autodestroy If set to true, the timer will autodestroy at the end of all callback functions. False by default
  *@param options.repeat If set, the callback action will be repeated the specified number of times. 1 by default. Set to -1 if repeat infinitely
+ *@param options.immediate If set, the callback action will be called before waiting 'time' ms. false by default.
 */
 class Timer {
 
@@ -33,9 +34,14 @@ class Timer {
         //If set, the callback action will be repeated the specified number of times
         this.repeat = options.repeat || 1;
 
+        // Should the timer start directly after its creation ?
         this.autostart = options.autostart || false;
 
+        // Should the timer destroy itself after completion ?
         this.autodestroy = options.autodestroy || false;
+
+        // Should the timer call 'callback function' immediately after starting ?
+        this.immediate = options.immediate || false;
 
         this._registeredFunction = () => {
             if (this.started && !this.isOver && !this.paused) {
@@ -51,7 +57,7 @@ class Timer {
     }
 
     /**
-     * Reset the timer
+     * Reset the timer. Do not reset its options!
      */
     reset() {
         this.currentTime = this.maxTime;
@@ -110,7 +116,10 @@ class Timer {
 
         this.currentTime -= this._scene.getEngine().getDeltaTime();
 
-        if (this.currentTime <= 0) {
+        if (this.currentTime <= 0 || this.immediate) {
+            // reset immediate
+            this.immediate = false;
+
             // The delay is finished, run the callback
             this.isOver = true;
             if (this.repeat != -1) {

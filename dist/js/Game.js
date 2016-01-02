@@ -125,7 +125,7 @@ var Game = (function () {
                 _this3._addMonth();
             };
 
-            this.buyTimer = new Timer(1000, this.scene, { autostart: true, repeat: -1 });
+            this.buyTimer = new Timer(5000, this.scene, { autostart: true, repeat: -1, immediate: true });
             this.buyTimer.callback = function () {
                 var rp = _this3.getRandomPosition();
                 if (rp) {
@@ -188,6 +188,9 @@ var Game = (function () {
             // Start the month timer
             this.monthTimer.reset();
             this.monthTimer.start();
+            this.buyTimer.reset();
+            this.buyTimer.immediate = true;
+            this.buyTimer.start();
         }
 
         /**

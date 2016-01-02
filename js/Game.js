@@ -112,7 +112,7 @@ class Game {
             this._addMonth();
         };
 
-        this.buyTimer = new Timer(1000, this.scene, {autostart:true, repeat:-1});
+        this.buyTimer = new Timer(5000, this.scene, {autostart:true, repeat:-1, immediate:true});
         this.buyTimer.callback = () => {
             let rp = this.getRandomPosition();
             if (rp){
@@ -174,6 +174,9 @@ class Game {
         // Start the month timer
         this.monthTimer.reset();
         this.monthTimer.start();
+        this.buyTimer.reset();
+        this.buyTimer.immediate = true;
+        this.buyTimer.start();
     }
 
     /**

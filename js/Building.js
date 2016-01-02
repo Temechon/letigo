@@ -26,7 +26,7 @@ class Building extends GameObject{
         this._time = 0;
 
         this.parameters = [
-            Game.randomNumber(-7,7), //inflation
+            0, //Math.random() < 0.5 ? -1 : 1, //inflation
             Game.randomNumber(this.basePrice-dr, this.basePrice+dr), // range
             Math.random(), // frequency 1
             Math.random(), // frequency 2
@@ -38,7 +38,7 @@ class Building extends GameObject{
 
         // Price label
         this.priceText = document.createElement('span');
-        this.priceText.innerHTML = '99999';
+        this.priceText.innerHTML = this.basePrice;
 
         this.priceTag = document.createElement('div');
         this.priceTag.className = 'priceTag';
@@ -63,14 +63,14 @@ class Building extends GameObject{
 
     updatePrice() {
         this._oldPrice = this.price;
-        this._time += 0.009;
+        this._time += 0.01;
         this.price = Math.floor(
-            this.basePrice +
-            this.parameters[0]*this._time+
-            this.parameters[1]*
-            Math.sin(this.parameters[2]*this._time) *
-            Math.cos(this.parameters[3]*this._time) *
-            Math.sin(this.parameters[4]*this._time)
+            this.basePrice
+            + 1 //this.parameters[0] // inflation
+            * this.parameters[1] // range
+            * Math.sin(this.parameters[2]*this._time) // frequency 1
+            //* Math.cos(this.parameters[3]*this._time)
+            //* Math.sin(this.parameters[4]*this._time)
         );
 
         let arrow = this._oldArrow;

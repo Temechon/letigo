@@ -24,7 +24,7 @@ var House = (function (_Building) {
         this.addChildren(cube);
 
         // The time that a house can be bought
-        this.canBuyTime = Game.randomNumber(8000, 13000);
+        this.canBuyTime = Game.randomNumber(80000, 130000);
 
         // Timer to check the building end
         this.timer = new Timer(this.canBuyTime, this.getScene(), { autodestroy: true });
