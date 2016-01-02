@@ -125,3 +125,4 @@ var Building = (function (_GameObject) {
 
     return Building;
 })(GameObject);
+//# sourceMappingURL=Building.js.map
