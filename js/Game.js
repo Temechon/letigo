@@ -24,10 +24,10 @@ class Game {
         // The state scene
         this.scene   = null;
 
-        // Positions on cells that can be built on
+        // Positions on cells that can be built on ([Position])
         this.availablePositions = [];
 
-        // Positions with a building on it
+        // Positions with a building on it ([Position])
         this.takenPositions = [];
 
         // The mansion of the city
@@ -77,7 +77,6 @@ class Game {
         meshTask.onSuccess = (t) => {
 
             this.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
-            this.availablePositions = [this.availablePositions[0]];
         };
 
         loader.onFinish = () => {
@@ -154,7 +153,7 @@ class Game {
 
     cleanPosition(building) {
         this.takenPositions.forEach((pos, index) => {
-           if (pos.equals(building.position)) {
+           if (pos.id === building.getPositionId()) {
                this.takenPositions.splice(index, 1);
                this.availablePositions.push(pos);
                return;
@@ -170,7 +169,6 @@ class Game {
             let m = this.scene.meshes[ind];
             if (m instanceof House) {
                 m.dispose();
-                ind--;
             }
         }
         // Start the month timer

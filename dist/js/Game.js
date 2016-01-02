@@ -31,10 +31,10 @@ var Game = (function () {
         // The state scene
         this.scene = null;
 
-        // Positions on cells that can be built on
+        // Positions on cells that can be built on ([Position])
         this.availablePositions = [];
 
-        // Positions with a building on it
+        // Positions with a building on it ([Position])
         this.takenPositions = [];
 
         // The mansion of the city
@@ -88,7 +88,6 @@ var Game = (function () {
             meshTask.onSuccess = function (t) {
 
                 _this2.availablePositions = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
-                _this2.availablePositions = [_this2.availablePositions[0]];
             };
 
             loader.onFinish = function () {
@@ -166,7 +165,7 @@ var Game = (function () {
             var _this4 = this;
 
             this.takenPositions.forEach(function (pos, index) {
-                if (pos.equals(building.position)) {
+                if (pos.id === building.getPositionId()) {
                     _this4.takenPositions.splice(index, 1);
                     _this4.availablePositions.push(pos);
                     return;
@@ -184,7 +183,6 @@ var Game = (function () {
                 var m = this.scene.meshes[ind];
                 if (m instanceof House) {
                     m.dispose();
-                    ind--;
                 }
             }
             // Start the month timer

@@ -47,7 +47,7 @@ var CityManager = (function () {
                     // normal positions
                     var result = CityManager.NORMAL_POSITION_REGEXP().exec(mesh.name);
                     if (result) {
-                        res.normal.push(mesh.position);
+                        res.normal.push(new Position(mesh.position));
                         mesh.dispose();
                     }
                 }

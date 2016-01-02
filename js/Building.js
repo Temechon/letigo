@@ -8,7 +8,10 @@ class Building extends GameObject{
         super(game);
 
         // Building position
-        this.position = position;
+        this.position = position.position;
+
+        // Position Object
+        this._position = position;
 
         // Knowing if the price is rising of decreasing)
         this._oldPrice = 0;
@@ -41,6 +44,10 @@ class Building extends GameObject{
         this.priceTag.className = 'priceTag';
         this.priceTag.appendChild(this.priceText);
         this.priceTag.appendChild(this.arrowTag);
+    }
+
+    getPositionId() {
+        return this._position.id;
     }
 
     displayPrice() {
@@ -80,6 +87,7 @@ class Building extends GameObject{
     }
 
     dispose() {
+
         // remove price tags
         if (this.priceTag.parentNode) {
             this.priceTag.parentNode.removeChild(this.priceTag);

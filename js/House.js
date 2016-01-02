@@ -33,23 +33,23 @@ class House extends Building {
      * Overrides mesh.dispose().
      */
     dispose() {
+        this.timer.stop();
+        this.priceTimer.stop();
 
         // If the player doesn't want to buy this building, make it disapear
-        this.demolish(() => {
-            super.dispose();
-            this.game.cleanPosition(this);
-        });
+        this.demolish();
     }
 
     /**
      * Remove this building
      */
-    demolish(callback) {
+    demolish() {
 
         let duration = 1000;
         let fps = 20;
         let quarter = duration*fps*0.001/4;
 
+        // remove animations
         this.animations = [];
         // Position animation
         let position = new BABYLON.Animation("", "position.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -82,7 +82,8 @@ class House extends Building {
         this.animations.push(rotation);
 
         this.getScene().beginAnimation(this, 0, duration, false, 1, () => {
-            callback();
+            super.dispose();
+            this.game.cleanPosition(this);
         });
     }
 

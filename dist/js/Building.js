@@ -21,7 +21,10 @@ var Building = (function (_GameObject) {
         _get(Object.getPrototypeOf(Building.prototype), 'constructor', this).call(this, game);
 
         // Building position
-        this.position = position;
+        this.position = position.position;
+
+        // Position Object
+        this._position = position;
 
         // Knowing if the price is rising of decreasing)
         this._oldPrice = 0;
@@ -56,6 +59,11 @@ var Building = (function (_GameObject) {
     }
 
     _createClass(Building, [{
+        key: 'getPositionId',
+        value: function getPositionId() {
+            return this._position.id;
+        }
+    }, {
         key: 'displayPrice',
         value: function displayPrice() {
             document.getElementsByTagName('body')[0].appendChild(this.priceTag);
@@ -89,6 +97,7 @@ var Building = (function (_GameObject) {
     }, {
         key: 'dispose',
         value: function dispose() {
+
             // remove price tags
             if (this.priceTag.parentNode) {
                 this.priceTag.parentNode.removeChild(this.priceTag);

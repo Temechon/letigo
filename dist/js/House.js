@@ -51,13 +51,11 @@ var House = (function (_Building) {
     _createClass(House, [{
         key: "dispose",
         value: function dispose() {
-            var _this2 = this;
+            this.timer.stop();
+            this.priceTimer.stop();
 
             // If the player doesn't want to buy this building, make it disapear
-            this.demolish(function () {
-                _get(Object.getPrototypeOf(House.prototype), "dispose", _this2).call(_this2);
-                _this2.game.cleanPosition(_this2);
-            });
+            this.demolish();
         }
 
         /**
@@ -65,12 +63,14 @@ var House = (function (_Building) {
          */
     }, {
         key: "demolish",
-        value: function demolish(callback) {
+        value: function demolish() {
+            var _this2 = this;
 
             var duration = 1000;
             var fps = 20;
             var quarter = duration * fps * 0.001 / 4;
 
+            // remove animations
             this.animations = [];
             // Position animation
             var position = new BABYLON.Animation("", "position.y", fps, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -92,7 +92,8 @@ var House = (function (_Building) {
             this.animations.push(rotation);
 
             this.getScene().beginAnimation(this, 0, duration, false, 1, function () {
-                callback();
+                _get(Object.getPrototypeOf(House.prototype), "dispose", _this2).call(_this2);
+                _this2.game.cleanPosition(_this2);
             });
         }
     }, {
