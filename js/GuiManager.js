@@ -63,4 +63,11 @@ class GUIManager {
         let c = this.game.money;
         this.money.innerHTML = `${c} $`;
     }
+
+    /**
+     * Display the final screen
+     */
+    showWinScreen() {
+
+    }
 }

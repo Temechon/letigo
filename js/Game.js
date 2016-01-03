@@ -35,7 +35,7 @@ class Game {
         this.mansion = null;
 
         // The player money
-        this.money = 2000;
+        this.money = 1500;
 
         this.guiManager = new GUIManager(this);
 
@@ -57,16 +57,16 @@ class Game {
 
         let scene = new BABYLON.Scene(this.engine);
         // Camera attached to the canvas
-        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(-14, 17, -20), scene);
-        camera.rotation.x = camera.rotation.y = 0.65;
+        let camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(-11, 34, -51), scene);
+        camera.rotation.x = camera.rotation.y = 0.7;
         camera.attachControl(this.engine.getRenderingCanvas());
 
         // Hemispheric light to light the scene
-        let h = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0,1,0), scene);
-        h.intensity = 0.7;
+        let h = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0,-1,0), scene);
+        h.intensity = 1.5;
 
         let dir = new BABYLON.DirectionalLight('dir', new BABYLON.Vector3(0,-1,-0.5), scene);
-        dir.intensity = 2;
+        //dir.intensity = 2;
         return scene;
     }
 
@@ -81,6 +81,7 @@ class Game {
         meshTask.onSuccess = (t) => {
 
             this.assets['house']        = CityManager.GET_HOUSE(t.loadedMeshes);
+            this.assets['mansion']      = CityManager.GET_MANSION(t.loadedMeshes);
             this.availablePositions     = CityManager.GET_POSITIONS(t.loadedMeshes).normal;
         };
 
@@ -127,6 +128,9 @@ class Game {
                 this.build(rp);
             }
         };
+
+        // Activate mansion
+        new Mansion(this, new Position(BABYLON.Vector3.Zero()));
 
         // When the player touch a building
         this.scene.onPointerDown = (evt, pickResult) => {
@@ -215,6 +219,25 @@ class Game {
     _addMonth() {
         this.monthTime ++;
         this.guiManager.updateGui();
+    }
+
+    /**
+     * Win the game !
+     */
+    win() {
+        this.monthTimer.stop();
+        this.buyTimer.stop();
+
+        for (let ind=0; ind<this.scene.meshes.length; ind++) {
+            let m = this.scene.meshes[ind];
+            if (m instanceof Building) {
+                m.stop();
+            }
+        }
+
+        // Display score and win screen
+        this.guiManager.showWinScreen();
+
     }
 
 }

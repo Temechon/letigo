@@ -15,6 +15,7 @@ class Building extends GameObject{
         // Position Object
         this._position = position;
 
+
         // Knowing if the price is rising of decreasing)
         this._oldPrice = 0;
         this._oldArrow = null;
@@ -101,6 +102,7 @@ class Building extends GameObject{
      * Returns screen coordinates of the building
      */
     _project() {
+        this.getScene().updateTransformMatrix();
         var tmpPos = this.position.clone();
         return BABYLON.Vector3.Project(
             tmpPos,
@@ -109,4 +111,18 @@ class Building extends GameObject{
             this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine())
         );
     };
+
+    /**
+     * Buy this building: see effect in subclasses
+     */
+    buy () {
+
+    }
+
+    /**
+     * Stop the price update of this building: see effect in subclasses
+     */
+    stop() {
+
+    }
 }

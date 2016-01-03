@@ -34,6 +34,16 @@ var CityManager = (function () {
         }
 
         /**
+         * Return the mesh called 'mansion'
+         */
+    }, {
+        key: 'MANSION_REGEXP',
+        value: function MANSION_REGEXP() {
+            return (/mansion/i
+            );
+        }
+
+        /**
          * Returns the list of position
          * {
          * normal:[],
@@ -115,6 +125,46 @@ var CityManager = (function () {
 
             if (!res) {
                 console.warn('>> house not found!');
+            }
+
+            return res;
+        }
+    }, {
+        key: 'GET_MANSION',
+        value: function GET_MANSION(meshes) {
+            var res = null;
+
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
+
+            try {
+                for (var _iterator3 = meshes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var mesh = _step3.value;
+
+                    // normal positions
+                    var result = CityManager.MANSION_REGEXP().exec(mesh.name);
+                    if (result) {
+                        res = mesh;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion3 && _iterator3['return']) {
+                        _iterator3['return']();
+                    }
+                } finally {
+                    if (_didIteratorError3) {
+                        throw _iteratorError3;
+                    }
+                }
+            }
+
+            if (!res) {
+                console.warn('>> mansion not found!');
             }
 
             return res;

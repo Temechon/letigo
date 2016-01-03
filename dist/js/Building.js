@@ -118,9 +118,24 @@ var Building = (function (_GameObject) {
     }, {
         key: '_project',
         value: function _project() {
+            this.getScene().updateTransformMatrix();
             var tmpPos = this.position.clone();
             return BABYLON.Vector3.Project(tmpPos, BABYLON.Matrix.Identity(), this.getScene().getTransformMatrix(), this.getScene().activeCamera.viewport.toGlobal(this.getScene().getEngine()));
         }
+    }, {
+        key: 'buy',
+
+        /**
+         * Buy this building: see effect in subclasses
+         */
+        value: function buy() {}
+
+        /**
+         * Stop the price update of this building: see effect in subclasses
+         */
+    }, {
+        key: 'stop',
+        value: function stop() {}
     }]);
 
     return Building;

@@ -18,6 +18,13 @@ class CityManager {
     }
 
     /**
+     * Return the mesh called 'mansion'
+     */
+    static MANSION_REGEXP() {
+        return /mansion/i;
+    }
+
+    /**
      * Returns the list of position
      * {
      * normal:[],
@@ -53,6 +60,23 @@ class CityManager {
         }
         if (!res) {
             console.warn('>> house not found!');
+        }
+
+        return res;
+    }
+
+    static GET_MANSION(meshes) {
+        let res = null;
+
+        for (let mesh of meshes) {
+            // normal positions
+            var result = CityManager.MANSION_REGEXP().exec(mesh.name);
+            if (result) {
+                res = mesh;
+            }
+        }
+        if (!res) {
+            console.warn('>> mansion not found!');
         }
 
         return res;

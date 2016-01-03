@@ -93,6 +93,13 @@ var GUIManager = (function () {
             var c = this.game.money;
             this.money.innerHTML = c + " $";
         }
+
+        /**
+         * Display the final screen
+         */
+    }, {
+        key: "showWinScreen",
+        value: function showWinScreen() {}
     }]);
 
     return GUIManager;
